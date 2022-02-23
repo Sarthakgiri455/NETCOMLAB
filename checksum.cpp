@@ -2,80 +2,6 @@
 #include<string>
 #include<vector>
 using namespace std;
-void receiverend(vector<string>v2, string message)
-{
-    cout<<"Dear receiver, could you please type the bits you received, so that we verify error or errrorless message"<<endl;
-    int x= message.length()/v2.size();
-    string s;
-    cin>>s;
-    string s1;
-    vector<string>v1;
-    for(int z=1;z<=s.length();z++)
-    {
-        s1=s1+message[z-1];
-        if((z%x)==0)
-        {
-            v1.push_back(s1);
-            s1="";
-        }
-    }
-    cout<<endl;
-    cout<<endl;
-    cout<<"Adding all the sections in the receiver end"<<endl;
-     for(int j=0;j<x.length();j++){
-        char temp=x[l-j-1];
-        char temp2=y[l-j-1];
-        int x1=temp-'0';
-        int y2=temp2-'0';
-        int sum=x1+y2+carry;
-        if(sum>1)
-        {
-            carry=1;
-        }
-        else
-        {
-            carry=0;
-        }
-        
-        sum=sum%2;
-        checksum[l-j-1]=sum+'0';
-    }
-    
-    receriversum(v2); 
-    
-    
-    
-    
-}
-
-
-
-string append(string ans, vector<string>v1)
-{
-    string tempo=ans;
-    for(int k=0;k<v1.size();k++)
-    {
-        tempo=tempo+v1[k];
-    }
-    return tempo;
-    
-}
-string onescomplement(string x)
-{
-    string tempo=x;
-    for(int k=0;k<x.length();k++)
-    {
-        if(tempo[k]=='0')
-        {
-            tempo[k]='1';
-        }
-        else
-        {
-            tempo[k]='0';
-        }
-    }
-    return tempo;
-}
 string calculation(string checksum2, string q)
 {
     string x=checksum2;
@@ -134,6 +60,128 @@ string calculation(string checksum2, string q)
     return checksum;
     
 }
+void receiverend(vector<string>v2, string message)
+{
+    cout<<"Dear receiver, could you please type the bits you received, so that we verify error or errrorless message"<<endl;
+    int l= message.length()/v2.size();
+    string s;
+    cin>>s;
+    string s1;
+    vector<string>v1;
+    for(int z=1;z<=s.length();z++)
+    {
+        s1=s1+message[z-1];
+        if((z%l)==0)
+        {
+            v1.push_back(s1);
+            s1="";
+        }
+    }
+    string checksum="";
+    
+    for(int k=0;k<v2[0].length();k++)
+    {
+        checksum+="0";
+        
+    }
+    string checkerchecksum=checksum;
+    cout<<endl;
+    cout<<endl;
+    cout<<"Adding all the sections in the receiver end"<<endl;
+    string x=v1[0];
+    string y= v1[1];
+    int carry=0;
+     for(int j=0;j<x.length();j++){
+        char temp=x[l-j-1];
+        char temp2=y[l-j-1];
+        int x1=temp-'0';
+        int y2=temp2-'0';
+        int sum=x1+y2+carry;
+        if(sum>1)
+        {
+            carry=1;
+        }
+        else
+        {
+            carry=0;
+        }
+        
+        sum=sum%2;
+        checksum[l-j-1]=sum+'0';
+    }
+    if(carry!=0)
+    {
+        for(int j=0;j<x.length();j++){
+           char temp=checksum[l-j-1];
+           int x1=temp-'0';
+        
+           int sum=x1+carry;
+           if(sum>1)
+           {
+               carry=1;
+           }
+           else
+           {
+               carry=0;
+            
+           }
+        
+           sum=sum%2;
+           checksum[l-j-1]=sum+'0';
+           if(carry==0)
+           {
+               break;
+           }
+       }
+    }
+    cout<<"check sum for step "<<1 <<"  receiver end  "<<checksum<<endl;
+    for(int k=2;k<v1.size();k++)
+    {
+        string checksum2=calculation(checksum, v1[k]);
+        cout<<"checksum step "<<k<<" "<<checksum2<<endl;
+        checksum=checksum2;
+    }
+    if(checkerchecksum==checksum)
+    {
+        cout<<" CORRECT MESSAGE !!!!!!";
+        
+    }
+    else{
+        cout<<"INCORRECT MESSAGE !!!!!!"<<endl;
+    }
+     
+    
+}
+
+
+
+string append(string ans, vector<string>v1)
+{
+    string tempo=ans;
+    for(int k=0;k<v1.size();k++)
+    {
+        tempo=tempo+v1[k];
+    }
+    return tempo;
+    
+}
+string onescomplement(string x)
+{
+    string tempo=x;
+    for(int k=0;k<x.length();k++)
+    {
+        if(tempo[k]=='0')
+        {
+            tempo[k]='1';
+        }
+        else
+        {
+            tempo[k]='0';
+        }
+    }
+    return tempo;
+}
+
 void calculate(vector<string>v1)
 {
     int l=v1[0].length();
