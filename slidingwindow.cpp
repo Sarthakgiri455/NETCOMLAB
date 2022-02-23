@@ -14,39 +14,49 @@ void resend(queue<int>&v2, int a)
         q3.pop();
     }
 }
-queue<int> acknowledgementcheck(queue<int>&v1, int success)
+void acknowledgementcheck(queue<int>&v1, int success)
 {
     string x;
-    
+    queue<int>frame;
+    for(int j=1;j<=success;j++)
+    {
+        frame.push(j);
+    }
     while(success>=0)
     {
         int a= v1.front();
-        cout<<"is frame "<<a <<" acknowledged dear receiver? Y/N"<<endl;
+        int b=v1.back();
+        int mn=b;
+        int xy=a;
+        cout<<"is frame "<<xy<<" acknowledged dear receiver? Y/N"<<endl;
         cin>>x;
         if(x=="Y"|| x=="y")
         {
+            mn+=1;
             v1.pop();
-            v1.push(a+1);
+            if(mn<=frame.back())
+            {
+                v1.push(mn);
+            }
+            
+            
+            xy++;
+            
             success--;
+            if((success==0))
+            {
+                break;
+            }
         }
         else
         {
             resend(v1, a);
         }
     }
-    queue<int>temp=v1;
-    cout<<"Elements in window are: "<<endl;
-    while(!temp.empty())
-    {
-        cout<<temp.front()<<" ";
-        temp.pop();
-    }
-    return v1;
+    
+    
+    
 }
-
-
-
-
 int main()
 {
     queue<int>slidingwindow;
@@ -91,7 +101,6 @@ int main()
             
         }
         cout<<"waiting for acknowledgement"<<endl;
-        
         acknowledgementcheck(slidingwindow, n_of_frames);
         
         
