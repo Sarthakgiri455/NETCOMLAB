@@ -60,38 +60,19 @@ string calculation(string checksum2, string q)
     return checksum;
     
 }
-void receiverend(vector<string>v2, string message)
+void calculatereceiver(vector<string>v1)
 {
-    cout<<"Dear receiver, could you please type the bits you received, so that we verify error or errrorless message"<<endl;
-    int l= message.length()/v2.size();
-    string s;
-    cin>>s;
-    string s1;
-    vector<string>v1;
-    for(int z=1;z<=s.length();z++)
-    {
-        s1=s1+message[z-1];
-        if((z%l)==0)
-        {
-            v1.push_back(s1);
-            s1="";
-        }
-    }
+    int l=v1[0].length();
     string checksum="";
-    
-    for(int k=0;k<v2[0].length();k++)
+    for(int k=0;k<l;k++)
     {
-        checksum+="0";
-        
+        checksum=checksum+"0";
     }
-    string checkerchecksum=checksum;
-    cout<<endl;
-    cout<<endl;
-    cout<<"Adding all the sections in the receiver end"<<endl;
-    string x=v1[0];
-    string y= v1[1];
+    string checksumtemp=checksum;
     int carry=0;
-     for(int j=0;j<x.length();j++){
+    string x=v1[0];
+    string y=v1[1];
+    for(int j=0;j<x.length();j++){
         char temp=x[l-j-1];
         char temp2=y[l-j-1];
         int x1=temp-'0';
@@ -113,6 +94,7 @@ void receiverend(vector<string>v2, string message)
     {
         for(int j=0;j<x.length();j++){
            char temp=checksum[l-j-1];
+        
            int x1=temp-'0';
         
            int sum=x1+carry;
@@ -134,25 +116,52 @@ void receiverend(vector<string>v2, string message)
            }
        }
     }
-    cout<<"check sum for step "<<1 <<"  receiver end  "<<checksum<<endl;
+    cout<<"check sum for step "<<1 <<" "<<checksum<<endl;
     for(int k=2;k<v1.size();k++)
     {
         string checksum2=calculation(checksum, v1[k]);
         cout<<"checksum step "<<k<<" "<<checksum2<<endl;
         checksum=checksum2;
     }
-    if(checkerchecksum==checksum)
+    if(checksumtemp!=checksum)
     {
-        cout<<" CORRECT MESSAGE !!!!!!";
+        cout<<"THERE IS ERROR IN THE MESSAGE"<<endl;;
+        
         
     }
     else{
-        cout<<"INCORRECT MESSAGE !!!!!!"<<endl;
+        cout<<"CORRECT MESSAGE"<<endl;
     }
-     
+    
     
 }
 
+
+
+void receiverend(vector<string>v2, string message)
+{
+    cout<<"Dear receiver, could you please type the bits you received, so that we verify error or errrorless message"<<endl;
+    int l= message.length()/v2.size();
+    string s;
+    cin>>s;
+    string s1;
+    vector<string>v1;
+    for(int z=1;z<=s.length();z++)
+    {
+        s1=s1+message[z-1];
+        if((z%l)==0)
+        {
+            v1.push_back(s1);
+            s1="";
+        }
+    }
+    cout<<endl;
+    cout<<endl;
+    cout<<"*****RECEIVER END*****"<<endl;
+    
+    calculatereceiver(v1);
+}
+    
 
 
 string append(string ans, vector<string>v1)
